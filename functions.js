@@ -1,7 +1,13 @@
 // Arquivo para armazenar funções JavaScript reutilizáveis
 
+const USER_GITHUB = 'marcosmelogithub';
+const GITHUB_REPO_URL = 'https://api.github.com/repos/' + USER_GITHUB + '/MundoMainframe/contents/';
+const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/' + USER_GITHUB + '/MundoMainframe/main/';
+
+/* 
 const GITHUB_REPO_URL = 'https://api.github.com/repos/marcosmelogithub/MundoMainframe/contents/';
 const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/marcosmelogithub/MundoMainframe/main/';
+*/
 
 /**
  * Função para obter a primeira linha de um arquivo .md
@@ -204,58 +210,9 @@ function listRepositorios() {
 }
 
 /**
- * Solicita e valida usuário GitHub antes de continuar
- * Retorna nome do usuário válido ou null se o usuário sair
- */
-async function askGitHubUsername() {
-    while (true) {
-        const rawInput = prompt('Digite seu usuário do GitHub (deixe em branco e ENTER para sair):', '');
-
-        if (rawInput === null) {
-            // Usuário pressionou Cancelar no prompt
-            return null;
-        }
-
-        const username = rawInput.trim();
-
-        if (username === '') {
-            return null; // opção de saída sem informar usuário
-        }
-
-        try {
-            const response = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}`);
-            if (response.ok) {
-                return username;
-            }
-
-            alert('Usuário GitHub inválido. Tente novamente.');
-        } catch (error) {
-            console.error('Erro ao verificar usuário GitHub:', error);
-            alert('Não foi possível verificar o usuário GitHub no momento. Tente novamente.');
-        }
-    }
-}
-
-/**
  * Função inicializadora da página
  */
 async function initializePage() {
-    console.log('Página inicializada com sucesso');
-
-    const username = await askGitHubUsername();
-    const reposContainer = document.getElementById('repositorios-list-container');
-
-    if (!reposContainer) {
-        console.error('Container para repositorios não encontrado');
-        return;
-    }
-
-    if (!username) {
-        reposContainer.innerHTML = '<p>Aplicação encerrada. Nenhum usuário GitHub informado.</p>';
-        return;
-    }
-
-    reposContainer.innerHTML = `<p>Usuário GitHub válido: <strong>${username}</strong></p>`;
     listRepositorios();
     listMarkdownFiles();
 }
