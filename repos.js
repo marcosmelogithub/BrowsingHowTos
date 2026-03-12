@@ -1,43 +1,91 @@
-// 1. Definindo o array global
-let ARRAY_REPOSITORIOS = [];
+// 2. Definindo o array global para armazenar o conteúdo
+let REPOSITORIOS_GLOBAL = [];
+// Mantemos as bases das URLs como variáveis para facilitar a substituição
+let GITHUB_REPO_URL_BASE = 'https://api.github.com/repos/USUARIOGITHUB/OREPOSITORIO/contents/';
+let GITHUB_RAW_URL_BASE = 'https://raw.githubusercontent.com/USUARIOGITHUB/OREPOSITORIO/main/';
 
-async function carregarEListarRepositorios() {
-    const caminhoArquivo = 'repositorios.txt';
+let GITHUB_REPO_URL = "";
+let GITHUB_RAW_URL = "";
+let GITHUB_REPO_HOWTO = "";
+
+async function carregarRepositoriosGithub() {
+    const url = "https://raw.githubusercontent.com/marcosmelogithub/BrowsingHowTos/main/repositorios.txt";
     const container = document.getElementById('repositorios-list-container');
 
     try {
-        // Lendo o conteúdo do arquivo
-        const resposta = await fetch(caminhoArquivo);
+        const resposta = await fetch(url);
         
-        if (!resposta.ok) throw new Error("Não foi possível ler o arquivo repositorios.txt");
+        if (!resposta.ok) {
+            throw new Error(`Erro ao carregar arquivo: ${resposta.statusText}`);
+        }
 
         const textoBruto = await resposta.text();
 
-        // Gerando o array global (separando por quebra de linha e removendo linhas vazias)
-        ARRAY_REPOSITORIOS = textoBruto.split(/\r?\n/).filter(linha => linha.trim() !== "");
+        // Armazenando o conteúdo em um array global 
+        REPOSITORIOS_GLOBAL = textoBruto.split(/\r?\n/).filter(linha => linha.trim() !== "");
 
-        // Limpando o container antes de listar
-        container.innerHTML = "<h3>Lista de Repositórios:</h3><ul></ul>";
-        const listaUl = container.querySelector('ul');
+        container.innerHTML = "<h3>Clique no Repositório que deseja acessar os HowTo's</h3><ul id='listaRepos'></ul>";
+        const listaUl = document.getElementById('listaRepos');
 
-        // 2. Listar o 2º elemento separado por vírgula
-        ARRAY_REPOSITORIOS.forEach(linha => {
+        REPOSITORIOS_GLOBAL.forEach(linha => {
             const partes = linha.split(',');
             
-            // Verifica se existe um segundo elemento (índice 1)
             if (partes.length >= 2) {
-                const segundoElemento = partes[1].trim();
+                const primeiroElemento = partes[0].trim(); // ID ou Nome técnico
+                const segundoElemento = partes[1].trim();  // Nome exibido na lista
                 
+                // 1. Tornar cada linha da lista clicável
                 const li = document.createElement('li');
                 li.textContent = segundoElemento;
+                li.style.cursor = "pointer"; // Melhora a experiência do usuário
+                li.style.textDecoration = "underline";
+                
+                // Adiciona o evento de clique
+                li.onclick = function() {
+                    tratarCliqueRepositorio(segundoElemento);
+                };
+
                 listaUl.appendChild(li);
             }
         });
 
-        console.log("Array Global carregado:", ARRAY_REPOSITORIOS);
-
     } catch (erro) {
-        console.error("Erro na carga dos repositórios:", erro);
-        container.innerHTML = "<p style='color:red;'>Erro ao carregar repositorios.txt. Verifique se o arquivo existe na pasta raiz.</p>";
+        console.error("Falha na operação:", erro);
+        if (container) {
+            container.innerHTML = `<p style='color:red;'>Erro ao acessar o GitHub: ${erro.message}</p>`;
+        }
+    }
+}
+
+// Função para processar o clique
+function tratarCliqueRepositorio(nomeClicado) {
+    // 2. Obter o 1º elemento correspondente à opção clicada no array global
+    const linhaCorrespondente = REPOSITORIOS_GLOBAL.find(linha => {
+        const partes = linha.split(',');
+        return partes.length >= 2 && partes[1].trim() === nomeClicado;
+    });
+
+    if (linhaCorrespondente) {
+        const idRepositorio = linhaCorrespondente.split(',')[0].trim();
+
+        // 3. Substituir a string "USUARIOGITHUB" pela usuário github informado
+        GITHUB_REPO_URL = GITHUB_REPO_URL_BASE.replace("USUARIOGITHUB", GITHUB_USER);
+        GITHUB_RAW_URL = GITHUB_RAW_URL_BASE.replace("USUARIOGITHUB", GITHUB_USER);
+
+        GITHUB_REPO_URL_BASE = GITHUB_REPO_URL
+        GITHUB_RAW_URL_BASE = GITHUB_RAW_URL
+
+        // 4. Substituir a string "OREPOSITORIO" pela informação obtida
+        GITHUB_REPO_URL = GITHUB_REPO_URL_BASE.replace("OREPOSITORIO", idRepositorio);
+        GITHUB_RAW_URL = GITHUB_RAW_URL_BASE.replace("OREPOSITORIO", idRepositorio);
+
+        // 5. Aciona função para tratar Howto's
+        listMarkdownFiles();
+
+        // 6. Exibir um alert com o conteúdo das variáveis
+        //alert(`URLs Atualizadas:\n\nRAW: ${GITHUB_RAW_URL}\nREPO: ${GITHUB_REPO_URL}`);
+        
+        console.log("URL RAW:", GITHUB_RAW_URL);
+        console.log("URL REPO:", GITHUB_REPO_URL);
     }
 }

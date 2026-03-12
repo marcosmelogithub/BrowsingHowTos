@@ -96,6 +96,8 @@ function displayMarkdownContent(filename) {
  * Função para listar todos os arquivos .md do repositório ProjetoHowTo
  */
 function listMarkdownFiles() {
+    //alert(`exibindo urls:\n\nRAW: ${GITHUB_RAW_URL}\nREPO: ${GITHUB_REPO_URL}`);
+
     const resultContainer = document.getElementById('markdown-files-container');
     
     if (!resultContainer) {
@@ -159,54 +161,3 @@ function listMarkdownFiles() {
             resultContainer.innerHTML = `<p style="color: red;">Erro ao listar arquivos: ${error.message}</p>`;
         });
 }
-
-/**
- * Função para ler repositorios.txt e exibir o segundo elemento de cada linha
- */
-function listRepositorios() {
-    const container = document.getElementById('repositorios-list-container');
-    if (!container) {
-        console.error('Container para repositorios não encontrado');
-        return;
-    }
-
-    container.innerHTML = '<p>Carregando repositorios...</p>';
-
-    fetch('repositorios.txt')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erro ao carregar repositorios.txt: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then(text => {
-            const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
-            if (lines.length === 0) {
-                container.innerHTML = '<p>Nenhum repositório encontrado.</p>';
-                return;
-            }
-
-            const items = lines.map(line => {
-                const parts = line.split(',').map(p => p.trim());
-                return parts[1] || '(sem segundo elemento)';
-            });
-
-            const html = '<ul>' + items.map(item => `<li>${item}</li>`).join('') + '</ul>';
-            container.innerHTML = html;
-        })
-        .catch(error => {
-            console.error('Erro ao carregar repositorios:', error);
-            container.innerHTML = `<p style="color: red;">Erro ao carregar repositorios: ${error.message}</p>`;
-        });
-}
-
-/**
- * Função inicializadora da página
- */
-async function initializePage() {
-    listRepositorios();
-    listMarkdownFiles();
-}
-
-// Inicializa a página quando o DOM está pronto
-document.addEventListener('DOMContentLoaded', initializePage);

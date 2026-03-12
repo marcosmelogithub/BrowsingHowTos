@@ -1,7 +1,5 @@
 // Variável Global
 let GITHUB_USER = "";
-let GITHUB_REPO_URL = "";
-let GITHUB_RAW_URL = ""
 
 async function verificarEnter(event) {
     if (event.key === "Enter") {
@@ -30,11 +28,6 @@ function exibirUsuario(nome) {
     // 1. Armazena o nome do usuário em uma variável global
     GITHUB_USER = nome;
 
-    // 2. Compoe as urls, ainda somente com o usuário github, para leitura dos repositórios com Howtos
-    GITHUB_REPO_URL = 'https://api.github.com/repos/' + GITHUB_USER + '/MundoMainframe/contents/';
-    GITHUB_RAW_URL = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/MundoMainframe/main/';
-
-
     const requestArea = document.getElementById("requestArea");
     const displayArea = document.getElementById("displayArea");
     const nameSpan = document.getElementById("userNameBold");
@@ -48,7 +41,7 @@ function exibirUsuario(nome) {
     atualizarHeaderComGlobal();
 
     // 5. Lista os repositórios
-    carregarEListarRepositorios();
+    carregarRepositoriosGithub();
 
     console.log("Variável Global GITHUB_USER:", GITHUB_USER);
 }
