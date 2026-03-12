@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browsing HowTo's</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Browsing HowTo's</h1>
+        <h4>V.11-03-2026-1824</h4>
+        <hr>
+    </header>
+
+    <div id="userInfoContainer"></div>
+    
+    <div id="modalLogin" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Acesso GitHub</h3>
+            <p>Digite seu usuário para continuar:</p>
+            <input type="text" id="githubInput" placeholder="Username..." autofocus>
+            <p style="font-size: 0.8em; color: #666;">(Pressione ENTER vazio para sair)</p>
+        </div>
+    </div>
+
+    <div id="github-user-container"></div>
+    <div id="repositorios-list-container"></div>
+    <hr>
+    <div id="markdown-files-container"></div>
+    <hr>
+    <div id="markdown-content-container"></div>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="functions.js"></script>

@@ -1,14 +1,5 @@
 // Arquivo para armazenar funções JavaScript reutilizáveis
 
-const USER_GITHUB = 'marcosmelogithub';
-const GITHUB_REPO_URL = 'https://api.github.com/repos/' + USER_GITHUB + '/MundoMainframe/contents/';
-const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/' + USER_GITHUB + '/MundoMainframe/main/';
-
-/* 
-const GITHUB_REPO_URL = 'https://api.github.com/repos/marcosmelogithub/MundoMainframe/contents/';
-const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/marcosmelogithub/MundoMainframe/main/';
-*/
-
 /**
  * Função para obter a primeira linha de um arquivo .md
  */

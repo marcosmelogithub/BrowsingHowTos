@@ -1,0 +1,35 @@
+.header-container {
+    display: flex;
+    align-items: baseline;
+    /* Altera para distribuir o espaço entre os grupos da esquerda e direita */
+    justify-content: space-between; 
+    background-color: #696969;
+    color: white;
+    padding: 10px 20px;
+    margin-bottom: 5px;
+    border-radius: 15px;
+}
+
+/* Novo: Mantém o h1 e h4 próximos com o gap original */
+.header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 120px; 
+}
+
+.header-container h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.header-container h4 {
+    margin: 0;
+    font-weight: normal;
+    color: #ccc;
+}
+
+/* Estilo para a variável na direita */
+.header-right {
+    font-weight: bold;
+    font-size: 14px;
+}

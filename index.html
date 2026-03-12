@@ -1,22 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browsing HowTo's</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>GitHub Browser App</title>
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="getusergithub.css">
 </head>
+
 <body>
-    <h1>Browsing HowTo's</h1>
-    <h4>V.11-03-2026-1824</h4>
-    <div id="github-user-container"></div>
+
+    <header class="header-container">
+       <div class="header-left">
+           <h1>Browsing HowTo's</h1>
+           <h4>V.11-03-2026-1824</h4>
+       </div>
+    
+       <div id="headerGlobalVar" class="header-right"></div>
+    </header>
+
+    <!-- Área onde para solicitar o nome do usuário da conta do github -->
+    <div id="requestArea" class="container request-bg">
+        <label for="githubInput">Informe o usuário da conta github:</label>
+        <input type="text" id="githubInput" onkeydown="verificarEnter(event)" autofocus>
+    </div>
+
+
+    <!-- Área onde será exibido o nome do usuário da conta válida do github -->
+    <div id="displayArea" class="container display-bg" style="display: none;">
+        <span>Usuário github informado: </span>
+        <span id="userNameBold"></span>
+    </div>
+
+
+    <!-- Área onde serão listados os repositórios obtidos no arquivo repositorios.txt -->
     <div id="repositorios-list-container"></div>
-    <hr>
-    <div id="markdown-files-container"></div>
-    <hr>
-    <div id="markdown-content-container"></div>
+
+
+    <!-- importação dos arquivos js -->
+    <script src="getusergithub.js"></script>
+    <script src="repos.js"></script>
 </body>
+
 </html>
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="functions.js"></script>
